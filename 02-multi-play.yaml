@@ -8,19 +8,18 @@
       package:
         name: "*"
         state: latest
-        when: "'n1' in g1"
 
     - name: Install Apache on CentOS
       package:
         name: httpd
         state: present
-      when: "'n1' in g1"
+      when: ansible_distribution == "Amazon"
 
     - name: Install Apache on Debian
       package:
         name: apache2
         state: present
-      when: "'N2' in g1"
+      when: ansible_distribution == "Debian"
 
     - name: Start Apache
       systemd:
