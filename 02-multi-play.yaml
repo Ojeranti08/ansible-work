@@ -1,64 +1,33 @@
 ---
-- name: Update n1 servers
-  hosts: n1
-
-  tasks:
-  - name: Create Directory
-    file:
-      path: /home/centos/new_dir1
-      state: directory
-
-- name: Update n1 servers
-  hosts: n1
-
-  tasks:
-  - name: Create Directory
-    file:
-      path: /home/centos/new_dir2
-      state: directory
-
-- name: Update n2 servers
-  hosts: n2
-
-  tasks:
-  - name: Create Directory
-    file:
-      path: /home/centos/new_dir1
-      state: directory
-
-- name: Update n2 servers
-  hosts: n2
-
-  tasks:
-  - name: Create Directory
-    file:
-      path: /home/centos/new_dir2
-      state: directory
-
-- name: Update group1 servers
+- name: Install Apache
   hosts: g1
+  become: yes
 
   tasks:
-  - name: Create Directory
-    file:
-      path: /home/centos/new_dir1
-      state: directory
+    - name: Update package cache
+      package:
+        name: "*"
+        state: latest
+        when: "'n1' in g1"
 
-- name: Update g1 servers
-  hosts: g1
+    - name: Install Apache on CentOS
+      package:
+        name: httpd
+        state: present
+      when: "'n1' in g1"
 
-  tasks:
-  - name: Create Directory
-    file:
-      path: /home/centos/new_dir1
-      state: directory
+    - name: Install Apache on Debian
+      package:
+        name: apache2
+        state: present
+      when: "'N2' in g1"
 
-- name: Update g1 servers
-  hosts: g1
+    - name: Start Apache
+      systemd:
+        name: "{{'httpd' if 'n1' in g1 else apache2'}}"
+        state: started
 
-  tasks:
-  - name: Create Directory
-    file:
-      path: /home/centos/new_dir2
-      state: directory
-...
+    - name: Enable Apache
+      systemd: 
+         name: "{{'httpd' if 'n1' in g1 else apache2'}}"
+         enabled: yes
