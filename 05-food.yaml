@@ -4,10 +4,6 @@
   become: yes
 
   tasks:
-   -  name: Update package cache (Debian/Ubuntu)
-      command: apt-get update
-      when: "'Debian' in ansible_distribution'"
-
    -  name: Install Git 
       yum:
        name: git
