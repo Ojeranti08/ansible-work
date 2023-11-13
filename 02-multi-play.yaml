@@ -4,21 +4,23 @@
   become: yes
 
   tasks:
-    - name: Update package cache
-      package:
-        name: "*"
-        state: latest
+    - name: Check OS Distribution
+      command: "cat /etc/os-release"
+      register: os_release_output
 
-    - name: Install Apache on CentOS
-      package:
+    - name: Update package cache
+      apt:
+        update_cache: yes
+        when: "'Debian' in os_release_output.stdout"
+
+    - name: Install HTTP Server on CentOS
+      yum:
         name: httpd
-        state: present
       when: ansible_distribution == "Amazon"
 
-    - name: Install Apache on Debian
-      package:
+    - name: Install HTTP Server on Debian
+      apt:
         name: apache2
-        state: present
       when: ansible_distribution == "Debian"
 
     - name: Start Apache
