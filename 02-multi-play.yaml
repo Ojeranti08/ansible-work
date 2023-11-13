@@ -26,7 +26,7 @@
       apt:
         name: apache2
         state: present
-      when: ansible_distribution == "Debian" 
+      when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
 
    # - name: Install Python3 on Debian
     #  become: yes
@@ -37,13 +37,18 @@
 
     - name: Start Web Server
       service:
-        name: apache2
+        name: "{{ 'apache2' if ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' else 'httpd' }}"
         state: started
-      when: ansible_distribution == "Debian" 
+      #when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
 
-    - name: Enable Apache2
+    - name: Enable Web Server on boot
       service:
-        name: apache2
+        name: "{{ 'apache2' if ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' else 'httpd' }}"
         enabled: yes
-      when: ansible_distribution == "Debian" 
+
+    #- name: Enable Apache2
+    #  service:
+     #   name: apache2
+     #   enabled: yes
+     # when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu" 
 ...
