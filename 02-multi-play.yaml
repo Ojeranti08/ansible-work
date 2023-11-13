@@ -1,26 +1,42 @@
 ---
-- name: Install Apache
+- name: Install HTTP Server
   hosts: g1
   become: yes
 
   tasks:
-    - name: Check OS Distribution
-      command: "cat /etc/os-release"
-      register: os_release_output
-
-    - name: Update package Lists
-      apt:
-        update_cache: yes
-        when: "'Debian' in os_release_output.stdout"
-
-    - name: Install HTTP Server on CentOS
-      yum:
+    - name: Install HTTPD Server on CentOS
+      dnf:
         name: httpd
-      when: "'Centos Linux 7' in os_release_output.stdout"
+        state: present
+      when: ansible_distribution == "Amazon" or ansible_distribution == "Debian"
 
-    - name: Install HTTP Server on Debian
+    - name: Start Httpd
+      service:
+        name: httpd
+        state: started
+      when: ansible_distribution == "Amazon" or ansible_distribution == "Debian"
+
+    - name: Enable Httpd
+      service:
+        name: httpd
+        enabled: yes
+      when: ansible_distribution == "Amazon" or ansible_distribution == "Debian"
+
+    - name: Install Apache on Debian
       apt:
         name: apache2
-      when: "'Debian' in os_release_output.stdout"
+        state: present
+      when: ansible_distribution == "Amazon" or ansible_distribution == "Debian"
+
+    - name: Start Apache
+      service:
+        name: apache2
+        state: started
+      when: ansible_distribution == "Amazon" or ansible_distribution == "Debian"
+
+    - name: Enable Apache
+      service:
+        name: apache2
+        enabled: yes
+      when: ansible_distribution == "Amazon" or ansible_distribution == "Debian"
 ...
-       
