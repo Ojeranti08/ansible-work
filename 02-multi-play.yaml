@@ -22,9 +22,9 @@
         enabled: yes
       when: ansible_distribution == "Amazon" or ansible_distribution == "Centos"
 
-    - name: Install Apache2 (Debian/Ubuntu)
+    - name: Install Apache (Debian/Ubuntu)
       apt:
-        name: apache2
+        name: "{{ 'apache2' }}"
         state: present
       when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
 
