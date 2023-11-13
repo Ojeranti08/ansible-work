@@ -22,18 +22,15 @@
         enabled: yes
       when: ansible_distribution == "Amazon" or ansible_distribution == "Centos"
 
+    - name: Update package cache (Debian/Ubuntu)
+      command: apt-get update
+      when: "'Debian' in ansible_distribution"
+
     - name: Install Apache (Debian/Ubuntu)
       apt:
         name: "{{ 'apache2' }}"
         state: present
       when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
-
-   # - name: Install Python3 on Debian
-    #  become: yes
-    #  package:
-     #   name: python3-dnf
-     #   state: present
-     #   when: ansible_distribution == "Amazon" or  ansible_distribution == "Fedora"
 
     - name: Start Web Server
       service:
