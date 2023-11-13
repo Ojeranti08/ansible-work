@@ -42,10 +42,4 @@
       service:
         name: "{{ 'apache2' if ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' else 'httpd' }}"
         enabled: yes
-
-    #- name: Enable Apache2
-    #  service:
-     #   name: apache2
-     #   enabled: yes
-     # when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu" 
 ...
