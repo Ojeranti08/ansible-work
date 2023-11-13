@@ -4,13 +4,17 @@
   become: yes
 
   tasks:
-  - name: Install Git 
-    yum:
-     name: git
-     state: present
+   -  name: Update package cache (Debian/Ubuntu)
+      command: apt-get update
+      when: "'Debian' in ansible_distribution'"
 
-  - name: Host Code
-    git:
+   -  name: Install Git 
+      yum:
+       name: git
+      state: present
+
+   - name: Host Code
+     git:
         repo: https://github.com/CeeyIT-Solutions/food3.git
         dest: /var/www/html
 ...
