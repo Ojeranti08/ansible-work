@@ -22,13 +22,5 @@
       apt:
         name: apache2
       when: "'Debian' in os_release_output.stdout"
-
-    - name: Start Apache2
-      service:
-        name: "{{'httpd' if 'n1' in g1 else apache2'}}"
-        state: started
-
-    - name: Enable Apache2
-      service: 
-         name: "{{'httpd' if 'n1' in g1 else apache2'}}"
-         enabled: yes
+...
+       
