@@ -1,10 +1,10 @@
 ---
 - name: Deploy Web App 
-  hosts: n1
+  hosts: n3
   become: yes
 
   tasks:
-    - name: Git 
+    - name: Install Git 
       yum:
        name: git
        state: present
