@@ -28,12 +28,12 @@
         state: present
       when: ansible_distribution == "Amazon" or ansible_distribution == "Debian"
 
-    - name: Install Python3 on CentOs or Debian
+    - name: Install Python3 on Debian
       become: yes
       package:
         name: python3-dnf
         state: present
-        when: ansible_distribution == "Amazon" or ansible_distribution == "Debian"
+        when: ansible_distribution == "Debian"
 
     - name: Start Apache2
       service:
