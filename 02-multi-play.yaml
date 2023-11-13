@@ -8,7 +8,7 @@
       command: "cat /etc/os-release"
       register: os_release_output
 
-    - name: Update package cache
+    - name: Update package Lists
       apt:
         update_cache: yes
         when: "'Debian' in os_release_output.stdout"
@@ -16,19 +16,19 @@
     - name: Install HTTP Server on CentOS
       yum:
         name: httpd
-      when: ansible_distribution == "Amazon"
+      when: "'Centos Linux 7' in os_release_output.stdout"
 
     - name: Install HTTP Server on Debian
       apt:
         name: apache2
-      when: ansible_distribution == "Debian"
+      when: "'Debian' in os_release_output.stdout"
 
     - name: Start Apache
-      systemd:
+      service:
         name: "{{'httpd' if 'n1' in g1 else apache2'}}"
         state: started
 
     - name: Enable Apache
-      systemd: 
+      service: 
          name: "{{'httpd' if 'n1' in g1 else apache2'}}"
          enabled: yes
