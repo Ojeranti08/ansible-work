@@ -1,6 +1,6 @@
 ---
 - name: Install HTTP Server
-  hosts: n3
+  hosts: g2
   become: yes
 
   tasks:
