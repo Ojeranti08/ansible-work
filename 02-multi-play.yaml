@@ -33,7 +33,7 @@
       package:
         name: python3-dnf
         state: present
-        when: ansible_distribution == "Debian"
+        when: ansible_distribution == "Amazon" or  ansible_distribution == "Fedora"
 
     - name: Start Apache2
       service:
